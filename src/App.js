@@ -1,25 +1,42 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, {useState} from "react";
+import { createGlobalStyle, ThemeProvider } from "styled-components";
+import { BrowserRouter, Switch, Route } from "react-router-dom";
+
+import Login from "./pages/Login";
+import Home from "./pages/Home";
+import { LIGHT_ASH, OFF_WHITE } from "./utils/constans";
+import LightTheme from "./components/themes/light"
+import DarkTheme from "./components/themes/dark"
+
+const GlobalStyle = createGlobalStyle`
+  body{
+    background: ${p => p.theme.BASE1};
+    box-sizing: border-box;
+    min-height: 100vh;
+    margin: 0;
+    color: ${p => p.theme.PRIMARY_TEXT};
+    font-family: 'Kaushan Script'
+  }
+`;
+
 
 function App() {
+  const [theme, setTheme] = useState(LightTheme)
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={{
+      ...theme, setTheme: () => {
+      setTheme(theme => theme.id === 'light' ? DarkTheme : LightTheme)
+    }}}>
+      <GlobalStyle />
+      <BrowserRouter>
+        <Switch>
+          <Route path="/login">
+            <Login />
+          </Route>
+          <Home />
+        </Switch>
+      </BrowserRouter>
+    </ThemeProvider>
   );
 }
 
