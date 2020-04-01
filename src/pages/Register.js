@@ -6,8 +6,7 @@ import {
   PageLayouts,
   Input,
   PasswordInput,
-  Button,
-  Spinner
+  Button
 } from "../components/common";
 
 const Form = styled.form`
@@ -35,7 +34,7 @@ let timeout;
 export default function Register() {
   const [formFields, setFormFields] = useState({
     username: "",
-    email: '',
+    email: "",
     password: ""
   });
   const [loding, setLoding] = useState(false);
@@ -67,33 +66,27 @@ export default function Register() {
     <PageLayouts>
       <Form onSubmit={handleSubmit}>
         <h1>Register</h1>
-        {loding ? (
-          <Spinner />
-        ) : (
-          <>
-            <Input
-              onChange={handleChange}
-              name="username"
-              value={username}
-              type="text"
-              placeholder="Username"
-              autoComplete="off"
-            />
-            <Input
-              onChange={handleChange}
-              name="email"
-              value={email}
-              type="email"
-              placeholder="Email"
-              autoComplete="off"
-            />
-            <PasswordInput
-              onChange={handleChange}
-              name="password"
-              value={password}
-            />
-          </>
-        )}
+        <Input
+          onChange={handleChange}
+          name="username"
+          value={username}
+          type="text"
+          placeholder="Username"
+          autoComplete="off"
+        />
+        <Input
+          onChange={handleChange}
+          name="email"
+          value={email}
+          type="email"
+          placeholder="Email"
+          autoComplete="off"
+        />
+        <PasswordInput
+          onChange={handleChange}
+          name="password"
+          value={password}
+        />
         <Button type="submit" large disabled={loding}>
           {loding ? "Loding..." : "新規登録"}
         </Button>

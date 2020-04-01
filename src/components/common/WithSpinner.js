@@ -1,5 +1,5 @@
-import styled, { keyframes } from "styled-components";
-import { BLUE } from "../../utils/constans";
+import React from "react";
+import styled from "styled-components";
 
 const Spinner = styled.div`
   height: 40px;
@@ -22,4 +22,10 @@ const Spinner = styled.div`
   }
 `;
 
-export { Spinner };
+const WithSpinner = WrappedConponent => ({ isLoading, ...otherProps }) => {
+  return isLoading ? <Spinner /> : <WrappedConponent {...otherProps} />;
+};
+
+export default WithSpinner;
+
+export { WithSpinner };

@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
+import { connect } from "react-redux";
 
 import {
   PageLayouts,
   Input,
   PasswordInput,
-  Button,
-  Spinner
+  Button
 } from "../components/common";
-import { Link } from "react-router-dom";
+
+import { googleSignInStart } from "../redux/user/user.actions";
 
 const Form = styled.form`
   width: 80%;
@@ -32,7 +34,7 @@ const StyledLink = styled(Link)`
 
 let timeout;
 
-export default function Login() {
+const Login = ({googleSignInStart}) => {
   const [formFields, setFormFields] = useState({
     email: "",
     password: ""
@@ -40,6 +42,7 @@ export default function Login() {
   const [loding, setLoding] = useState(false);
 
   const { email, password } = formFields;
+
   const handleChange = event => {
     event.persist();
     const { name, value } = event.target;
@@ -48,6 +51,7 @@ export default function Login() {
       [name]: value
     }));
   };
+
   const handleSubmit = event => {
     event.preventDefault();
     setLoding(true);
@@ -55,6 +59,7 @@ export default function Login() {
       setLoding(false);
     }, 2000);
   };
+
   useEffect(() => {
     return () => {
       if (timeout) {
@@ -66,10 +71,6 @@ export default function Login() {
     <PageLayouts>
       <Form onSubmit={handleSubmit}>
         <h1>Login</h1>
-        {loding ? (
-          <Spinner />
-        ) : (
-          <>
             <Input
               onChange={handleChange}
               name="email"
@@ -83,15 +84,13 @@ export default function Login() {
               name="password"
               value={password}
             />
-          </>
-        )}
         <Button type="submit" large disabled={loding}>
           {loding ? "Loding..." : "ログイン"}
         </Button>
         {!loding && (
           <>
             <div className="alt-text">または</div>
-            <Button type="button" secondary>
+            <Button onClick={googleSignInStart} type="button" secondary>
               Googleでログイン
             </Button>
             <StyledLink to="/register">アカウント作成</StyledLink>
@@ -100,4 +99,10 @@ export default function Login() {
       </Form>
     </PageLayouts>
   );
-}
+};
+
+const mapDispatchToProps = dispatch => ({
+  googleSignInStart: () => dispatch(googleSignInStart())
+});
+
+export default connect(null, mapDispatchToProps)(Login);

@@ -1,13 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { createGlobalStyle, ThemeProvider } from "styled-components";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
+import { connect } from "react-redux";
+
+import { checkUserSession } from "./redux/user/user.actions";
 
 import Login from "./pages/Login";
 import Home from "./pages/Home";
+import Register from "./pages/Register";
+import Top from "./pages/Top";
+
 import LightTheme from "./components/themes/light";
 import DarkTheme from "./components/themes/dark";
-import Register from "./pages/Register";
-import Top from "./pages/top";
 
 const GlobalStyle = createGlobalStyle`
   body{
@@ -21,8 +25,13 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
-function App() {
+function App({ checkUserSession }) {
   const [theme, setTheme] = useState(LightTheme);
+
+  useEffect(() => {
+    checkUserSession();
+  });
+
   return (
     <ThemeProvider
       theme={{
@@ -45,4 +54,8 @@ function App() {
   );
 }
 
-export default App;
+const mapDispatchToProps = dispatch => ({
+  checkUserSession: () => dispatch(checkUserSession())
+});
+
+export default connect(null, mapDispatchToProps)(App);
