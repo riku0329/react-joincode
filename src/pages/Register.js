@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 import {
   PageLayouts,
@@ -8,11 +9,10 @@ import {
   Button,
   Spinner
 } from "../components/common";
-import { Link } from "react-router-dom";
 
 const Form = styled.form`
   width: 80%;
-  height: 65%;
+  height: 70%;
   max-width: 400px;
   border: 1px solid ${p => p.theme.BASE2};
   padding: 16px;
@@ -32,14 +32,15 @@ const StyledLink = styled(Link)`
 
 let timeout;
 
-export default function Login() {
+export default function Register() {
   const [formFields, setFormFields] = useState({
-    email: "",
+    username: "",
+    email: '',
     password: ""
   });
   const [loding, setLoding] = useState(false);
 
-  const { email, password } = formFields;
+  const { username, email, password } = formFields;
   const handleChange = event => {
     event.persist();
     const { name, value } = event.target;
@@ -65,16 +66,24 @@ export default function Login() {
   return (
     <PageLayouts>
       <Form onSubmit={handleSubmit}>
-        <h1>Login</h1>
+        <h1>Register</h1>
         {loding ? (
           <Spinner />
         ) : (
           <>
             <Input
               onChange={handleChange}
+              name="username"
+              value={username}
+              type="text"
+              placeholder="Username"
+              autoComplete="off"
+            />
+            <Input
+              onChange={handleChange}
               name="email"
               value={email}
-              type="text"
+              type="email"
               placeholder="Email"
               autoComplete="off"
             />
@@ -86,7 +95,7 @@ export default function Login() {
           </>
         )}
         <Button type="submit" large disabled={loding}>
-          {loding ? "Loding..." : "ログイン"}
+          {loding ? "Loding..." : "新規登録"}
         </Button>
         {!loding && (
           <>
@@ -94,7 +103,7 @@ export default function Login() {
             <Button type="button" secondary>
               Googleでログイン
             </Button>
-            <StyledLink to="/register">アカウント作成</StyledLink>
+            <StyledLink to="/login">ログイン</StyledLink>
           </>
         )}
       </Form>

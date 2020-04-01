@@ -3,12 +3,16 @@ import styled from "styled-components";
 import { Header } from "./Header";
 
 const Content = styled.main`
-  max-width: 800px;
-  margin: 80px auto 0px auto;
-  padding: 0 16px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  height: 100vh;
+  max-width: 100%;
+  padding-top: 70px;
   box-sizing: border-box;
   font-family: "Open Sans";
   background: ${p => p.theme.BASE1};
+  overflow-y: scroll;
 
   h1,
   h2,

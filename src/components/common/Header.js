@@ -8,7 +8,6 @@ const HeaderWrapper = styled.header`
   width: 100%;
   box-sizing: border-box;
   display: flex;
-  padding: 0 16px;
   position: fixed;
   top: 0;
   background: ${p => p.theme.BASE2};
@@ -21,12 +20,13 @@ const Menu = styled.nav`
   width: 100%;
   top: 60px;
   left: 0;
-  padding: 8px;
+  padding: 0;
   font-family: "Open Sans";
   border-bottom: 3px solid ${p => p.theme.BASE2};
   background: ${p => p.theme.BASE2};
 
   @media (min-width: 768px) {
+    padding: 0;
     display: flex;
     background: none;
     left: initial;
@@ -59,7 +59,7 @@ const MobileMenuIcon = styled.div`
   padding: 5px;
   > div {
     height: 3px;
-    background: black;
+    background: ${p => p.theme.SECONDARY_TEXT};
     margin: 5px 0;
     width: 100%;
   }
@@ -68,12 +68,29 @@ const MobileMenuIcon = styled.div`
   }
 `;
 
+const TitleNav = styled.div`
+  padding: 0;
+  .top {
+    margin: 0;
+  }
+`;
+
+const TopLink = styled(Link)`
+  text-decoration: none;
+  color: ${p => p.theme.SECONDARY_TEXT};
+`;
+
 export const Header = () => {
   const { pathname } = useLocation();
   const [menuOpen, setMenuOpen] = useState(false);
   const { id, setTheme } = useContext(ThemeContext);
   return (
     <HeaderWrapper>
+      <TitleNav>
+        <h1 className="top">
+          <TopLink to="/top">Join Code</TopLink>
+        </h1>
+      </TitleNav>
       <MobileMenuIcon onClick={() => setMenuOpen(s => !s)}>
         <div />
         <div />

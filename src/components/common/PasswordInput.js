@@ -44,7 +44,7 @@ export const PasswordInput = props => {
       <PasswordInputWrapper>
         <PasswordInputStyled {...props} />
         <ToggleButton onClick={() => setShowPassword(s => !s)}>
-          {showPassword ? "Hide" : "Show"}
+          {showPassword ? "隠す" : "確認"}
         </ToggleButton>
       </PasswordInputWrapper>
       <div>{showPassword ? props.value : ""}</div>
