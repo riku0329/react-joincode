@@ -1,9 +1,11 @@
 import React, { useState, useContext } from "react";
 import styled, { ThemeContext } from "styled-components";
+import { createStructuredSelector } from "reselect";
 import { Link as ReactRouterDomLink, useLocation } from "react-router-dom";
 import { ToggleTheme } from "./ToggleTheme";
 import { connect } from "react-redux";
 import { signOutStart } from "../../redux/user/user.actions";
+import { selectCurrentUser } from "../../redux/user/user.selectors";
 
 const HeaderWrapper = styled.header`
   height: 60px;
@@ -77,12 +79,6 @@ const TitleNav = styled.div`
   }
 `;
 
-const SignOutStyled = styled.p`
-  padding: 4px 8px;
-  color: ${p => p.theme.SECONDARY_TEXT};
-  cursor: pointer;
-`;
-
 const TopLink = styled(Link)`
   text-decoration: none;
   color: ${p => p.theme.SECONDARY_TEXT};
@@ -92,7 +88,7 @@ const Header = ({ currentUser, signOutStart }) => {
   const { pathname } = useLocation();
   const [menuOpen, setMenuOpen] = useState(false);
   const { id, setTheme } = useContext(ThemeContext);
-  console.log(currentUser)
+
   return (
     <HeaderWrapper>
       <TitleNav>
@@ -106,29 +102,37 @@ const Header = ({ currentUser, signOutStart }) => {
         <div />
       </MobileMenuIcon>
       <Menu open={menuOpen}>
-        <StyledLink to="/user"></StyledLink>
-        <StyledLink to="/" isActive={pathname === "/"}>
-          Home
-        </StyledLink>
         {currentUser ? (
-          <SignOutStyled onClick={signOutStart}>Logout</SignOutStyled>
+          <>
+          <StyledLink to="/" isActive={pathname === "/"}>
+            Home
+          </StyledLink>
+            <StyledLink to="/service" isActive={pathname === "/service"} >
+              Service
+            </StyledLink>
+          <StyledLink to="/user" isActive={pathname === "/user"}>
+            My page
+          </StyledLink>
+            </>
         ) : (
           <StyledLink to="/login" isActive={pathname === "/login"}>
             Login
           </StyledLink>
+
         )}
+
+
         <ToggleTheme isActive={id === "dark"} onToggle={setTheme} />
       </Menu>
     </HeaderWrapper>
   );
 };
+const mapStateToProps = createStructuredSelector({
+  currentUser: selectCurrentUser
+});
 
 const mapDispatchToProps = dispatch => ({
   signOutStart: () => dispatch(signOutStart())
-});
-
-const mapStateToProps = state => ({
-  currentUser: state.user.currentUser
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header);

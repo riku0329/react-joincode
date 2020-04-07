@@ -46,7 +46,7 @@ export const PasswordInput = props => {
           {showPassword ? "隠す" : "確認"}
         </ToggleButton>
       </PasswordInputWrapper>
-      <div>{showPassword ? props.value : ""}</div>
+      <div>{showPassword ? props.ref : ""}</div>
     </>
   );
 };

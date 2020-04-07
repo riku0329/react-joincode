@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
@@ -10,7 +10,10 @@ import {
   Button
 } from "../components/common";
 
-import { googleSignInStart } from "../redux/user/user.actions";
+import {
+  googleSignInStart,
+  emailSignInStart
+} from "../redux/user/user.actions";
 
 const Form = styled.form`
   width: 80%;
@@ -32,14 +35,11 @@ const StyledLink = styled(Link)`
   color: ${p => p.theme.PRIMARY_TEXT};
 `;
 
-let timeout;
-
-const Login = ({googleSignInStart}) => {
+const Login = ({ googleSignInStart, emailSignInStart }) => {
   const [formFields, setFormFields] = useState({
     email: "",
     password: ""
   });
-  const [loding, setLoding] = useState(false);
 
   const { email, password } = formFields;
 
@@ -54,55 +54,43 @@ const Login = ({googleSignInStart}) => {
 
   const handleSubmit = event => {
     event.preventDefault();
-    setLoding(true);
-    timeout = setTimeout(() => {
-      setLoding(false);
-    }, 2000);
+    emailSignInStart(email, password);
   };
 
-  useEffect(() => {
-    return () => {
-      if (timeout) {
-        clearTimeout(timeout);
-      }
-    };
-  }, []);
   return (
     <PageLayouts>
       <Form onSubmit={handleSubmit}>
         <h1>Login</h1>
-            <Input
-              onChange={handleChange}
-              name="email"
-              value={email}
-              type="text"
-              placeholder="Email"
-              autoComplete="off"
-            />
-            <PasswordInput
-              onChange={handleChange}
-              name="password"
-              value={password}
-            />
-        <Button type="submit" large disabled={loding}>
-          {loding ? "Loding..." : "ログイン"}
+        <Input
+          onChange={handleChange}
+          name="email"
+          value={email}
+          type="text"
+          placeholder="Email"
+          autoComplete="off"
+        />
+        <PasswordInput
+          onChange={handleChange}
+          name="password"
+          value={password}
+        />
+        <Button type="submit" large>
+          ログイン
         </Button>
-        {!loding && (
-          <>
-            <div className="alt-text">または</div>
-            <Button onClick={googleSignInStart} type="button" secondary>
-              Googleでログイン
-            </Button>
-            <StyledLink to="/register">アカウント作成</StyledLink>
-          </>
-        )}
+        <div className="alt-text">または</div>
+        <Button onClick={googleSignInStart} type="button" secondary>
+          Googleでログイン
+        </Button>
+        <StyledLink to="/register">アカウント作成</StyledLink>
       </Form>
     </PageLayouts>
   );
 };
 
 const mapDispatchToProps = dispatch => ({
-  googleSignInStart: () => dispatch(googleSignInStart())
+  googleSignInStart: () => dispatch(googleSignInStart()),
+  emailSignInStart: (email, password) =>
+    dispatch(emailSignInStart({ email, password }))
 });
 
 export default connect(null, mapDispatchToProps)(Login);

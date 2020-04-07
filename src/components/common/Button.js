@@ -3,11 +3,14 @@ import styled, { css } from "styled-components";
 const Button = styled.button`
   color: ${p => p.theme.PRIMARY_TEXT};
 
-  ${p => p.secondary ? css`
-    background: ${p => p.theme.SECONDARY_BUTTON};
-  ` : css`
-    background: ${p => p.theme.PRIMARY_BUTTON};
-  `}
+  ${p =>
+    p.secondary
+      ? css`
+          background: ${p => p.theme.SECONDARY_BUTTON};
+        `
+      : css`
+          background: ${p => p.theme.PRIMARY_BUTTON};
+        `}
   font-weight: bold;
   ${p =>
     p.large
@@ -26,6 +29,16 @@ const Button = styled.button`
   width: 100%;
   display: block;
   white-space: none;
+  :hover{
+    ${p =>
+    p.secondary
+      ? css`
+          background: ${p => p.theme.SECONDARY_BUTTON2};
+        `
+      : css`
+          background: ${p => p.theme.PRIMARY_BUTTON2};
+        `}
+  }
 
   &:disabled {
     background: ${p => p.theme.BASE};

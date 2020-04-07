@@ -50,7 +50,11 @@ export default function Top() {
         <DateilStyeld>
           <h1 className="title">Join code とは</h1>
           <p className="dateil">
-            勉強や趣味など誰かと一緒にアプリを共同開発していきたい人のためのマッチングサービスです。
+            エンジニアとしてスキルを磨くためのアプリです。
+            <br />
+            ここでは、スキルをサービスとして販売することができます。
+            <br />
+            他にも誰かと共同開発を行う募集をしたりミートアップを募集できます。
           </p>
           <JoinButton>
             <LinkStyled to="/register">今すぐはじめる</LinkStyled>

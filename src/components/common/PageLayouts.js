@@ -4,7 +4,6 @@ import Header from "./Header";
 
 const Content = styled.main`
   display: flex;
-  flex-direction: row;
   justify-content: center;
   height: 100vh;
   max-width: 100%;
@@ -12,7 +11,6 @@ const Content = styled.main`
   box-sizing: border-box;
   font-family: "Open Sans";
   background: ${p => p.theme.BASE1};
-  overflow-y: scroll;
 
   h1,
   h2,

@@ -3,5 +3,7 @@ export * from "./PageLayouts";
 export * from "./Header";
 export * from "./Input";
 export * from "./PasswordInput";
-export * from "./WithSpinner";
+export * from "./Spinner";
 export * from "./ToggleTheme";
+export * from "./Select";
+export * from "./Textarea"

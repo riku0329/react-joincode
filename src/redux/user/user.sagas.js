@@ -8,14 +8,15 @@ import {
   signOutSuccess,
   signOutFailure,
   signUpSuccess,
-  signUpFailure
+  signUpFailure,
 } from "./user.actions";
 
 import {
   auth,
+  authSession,
   googleProvider,
   createUserProfileDocument,
-  getCurrentUser
+  getCurrentUser,
 } from "../../firebase/firebase.utils";
 
 export function* getSnapshotFromUserAuth(userAuth, additionalData) {
@@ -34,7 +35,9 @@ export function* getSnapshotFromUserAuth(userAuth, additionalData) {
 
 export function* signInWithGoogle() {
   try {
-    const { user } = yield auth.signInWithPopup(googleProvider);
+    const { user } = yield authSession.then(() => {
+      return auth.signInWithPopup(googleProvider);
+    });
     yield getSnapshotFromUserAuth(user);
   } catch (error) {
     yield put(signInFailure(error));
@@ -43,7 +46,9 @@ export function* signInWithGoogle() {
 
 export function* signInWithEmail({ payload: { email, password } }) {
   try {
-    const { user } = yield auth.signInWithEmailAndPassword(email, password);
+    const { user } = yield authSession.then(() => {
+      return auth.signInWithEmailAndPassword(email, password);
+    });
     yield getSnapshotFromUserAuth(user);
   } catch (error) {
     yield put(signInFailure(error));
@@ -53,7 +58,6 @@ export function* signInWithEmail({ payload: { email, password } }) {
 export function* isUserAuthenticated() {
   try {
     const userAuth = yield getCurrentUser();
-    if (!userAuth) return;
     yield getSnapshotFromUserAuth(userAuth);
   } catch (error) {
     yield put(signInFailure(error));
@@ -69,10 +73,17 @@ export function* signOut() {
   }
 }
 
-export function* signUp({ payload: { email, password, displayName } }) {
+export function* signUp({
+  payload: { email, password, displayName, photoURL },
+}) {
   try {
     const { user } = yield auth.createUserWithEmailAndPassword(email, password);
-    yield put(signUpSuccess({ user, additionalData: { displayName } }));
+    yield put(
+      signUpSuccess({
+        user,
+        additionalData: { displayName, photoURL },
+      })
+    );
   } catch (error) {
     yield put(signUpFailure(error));
   }
@@ -113,6 +124,6 @@ export function* userSagas() {
     call(onCheckUserSession),
     call(onSignOutStart),
     call(onSignUpStart),
-    call(onSignUpSuccess)
+    call(onSignUpSuccess),
   ]);
 }
