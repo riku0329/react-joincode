@@ -74,6 +74,31 @@ export const createServiceDocument = async (newService, user) => {
   return serviceRef;
 };
 
+export const servicesSnapshotToMap = (services) => {
+  const transformedService = services.docs.map((doc) => {
+    const {
+      category,
+      description,
+      image,
+      price,
+      title,
+      createdAt,
+      createdBy,
+    } = doc.data();
+    return {
+      id: doc.id,
+      category,
+      description,
+      image,
+      price,
+      title,
+      createdAt,
+      createdBy,
+    };
+  });
+  return transformedService;
+};
+
 export const auth = firebase.auth();
 export const authSession = firebase
   .auth()

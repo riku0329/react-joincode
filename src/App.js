@@ -21,6 +21,7 @@ import LightTheme from "./components/themes/light";
 import DarkTheme from "./components/themes/dark";
 import { Spinner } from "./components/common";
 import Service from "./pages/Service";
+import UserServices from "./pages/UserServices";
 
 const GlobalStyle = createGlobalStyle`
   body{
@@ -76,6 +77,7 @@ function App({ checkUserSession, isLoading, currentUser }) {
               ) : (
                 <Redirect to="/login" />
                   )}
+                <Route path="/service/me" component={UserServices} />
                 <Route path="/service" component={Service} />
             </>
           )}

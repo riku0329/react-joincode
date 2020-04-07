@@ -9,6 +9,7 @@ const theme = {
   BASE: "#fff",
   PRIMARY_TEXT: "#191921",
   SECONDARY_TEXT: "#323745",
+  TEXT: "#b2bbc8",
 
   PURPLE: "#3324AF",
   DARK_BLACK: "#121212",

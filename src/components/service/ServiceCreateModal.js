@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import Modal from "react-modal";
 
-import { Input } from "./Input";
-import { Select } from "./Select";
-import { Textarea } from "./Textarea";
-import { Button } from "./Button";
+import { Input } from "../common/Input";
+import { Select } from "../common/Select";
+import { Textarea } from "../common/Textarea";
+import { Button } from "../common/Button";
 import { createServiceStart } from "../../redux/service/service.actions";
 import { connect } from "react-redux";
 
@@ -188,7 +188,7 @@ function ServiceCreateModal({ createServiceStart }) {
             <ButtonStyled type="button" onClick={handleSubmit}>
               作成
             </ButtonStyled>
-            <ButtonStyled type="button" disabled onClick={closeModal}>
+            <ButtonStyled disabled isClose onClick={closeModal}>
               キャンセル
             </ButtonStyled>
           </ServiceButton>

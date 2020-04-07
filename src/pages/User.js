@@ -8,6 +8,7 @@ import { selectCurrentUser } from "../redux/user/user.selectors";
 
 import { Button } from "../components/common";
 import { signOutStart } from "../redux/user/user.actions";
+import { Link } from "react-router-dom";
 
 const UserStyled = styled.div`
   width: 70%;
@@ -15,7 +16,7 @@ const UserStyled = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: ${p => p.theme.BASE2};
+  background: ${(p) => p.theme.BASE2};
 `;
 
 const UserProfile = styled.div`
@@ -43,9 +44,10 @@ const User = ({ currentUser, signOutStart }) => {
           <UserImage src={photoURL} />
           <UserName>{displayName}</UserName>
           <p>{email}</p>
-          <Button onClick={signOutStart}>
-            サインアウト
+          <Button>
+            <Link to="/service/me">My Service</Link>
           </Button>
+          <Button onClick={signOutStart}>サインアウト</Button>
         </UserProfile>
       </UserStyled>
     </PageLayouts>
@@ -53,11 +55,11 @@ const User = ({ currentUser, signOutStart }) => {
 };
 
 const mapStateToProps = createStructuredSelector({
-  currentUser: selectCurrentUser
+  currentUser: selectCurrentUser,
 });
 
-const mapDispatchToProps = dispatch => ({
-  signOutStart: () => dispatch(signOutStart())
+const mapDispatchToProps = (dispatch) => ({
+  signOutStart: () => dispatch(signOutStart()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(User);
