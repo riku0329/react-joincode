@@ -1,10 +1,5 @@
 import ServiceActionTypes from "./service.types";
 
-import {
-  firestore,
-  servicesSnapshotToMap,
-} from "../../firebase/firebase.utils";
-
 export const createServiceStart = (newService) => ({
   type: ServiceActionTypes.CREATE_SERVICE_START,
   payload: newService,
@@ -34,17 +29,31 @@ export const fetchServicesFailure = (error) => ({
   payload: error,
 });
 
-export const fetchServicesStartAsync = () => {
-  return (dispatch) => {
-    const serviceRef = firestore.collection("services");
-    dispatch(fetchServicesStart());
+export const fetchUserServicesStart = () => ({
+  type: ServiceActionTypes.FETCH_USER_SERVICES_START,
+});
 
-    serviceRef
-      .onSnapshot(async (snapShot) => {
-        const servicesMap = servicesSnapshotToMap(snapShot);
-        dispatch(fetchServicesSuccess(servicesMap));
-        console.log(servicesMap)
-      })
-      .catch((error) => dispatch(fetchServicesFailure(error.message)));
-  };
-};
+export const fetchUserServicesSuccess = (servicesMap) => ({
+  type: ServiceActionTypes.FETCH_USER_SERVICES_SUCCESS,
+  payload: servicesMap,
+});
+
+export const fetchUserServicesFailure = (error) => ({
+  type: ServiceActionTypes.FETCH_USER_SERVICES_FAILURE,
+  payload: error,
+});
+
+export const fetchServiceStart = (id) => ({
+  type: ServiceActionTypes.FETCH_SERVICE_START,
+  payload: id,
+});
+
+export const fetchServiceSucess = (currentService) => ({
+  type: ServiceActionTypes.FETCH_SERVICE_SUCCESS,
+  payload: currentService,
+});
+
+export const fetchServiceFailure = (error) => ({
+  type: ServiceActionTypes.FETCH_SERVICE_START,
+  payload: error,
+});

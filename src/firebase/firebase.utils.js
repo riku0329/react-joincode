@@ -63,10 +63,8 @@ export const createServiceDocument = async (newService, user) => {
       price,
       title,
       createdAt,
-      createdBy: {
-        userId: id,
-        displayName,
-      },
+      userId: id,
+      displayName,
     });
   } catch (error) {
     console.log("error creating service", error.message);
@@ -76,28 +74,24 @@ export const createServiceDocument = async (newService, user) => {
 
 export const servicesSnapshotToMap = (services) => {
   const transformedService = services.docs.map((doc) => {
-    const {
-      category,
-      description,
-      image,
-      price,
-      title,
-      createdAt,
-      createdBy,
-    } = doc.data();
     return {
       id: doc.id,
-      category,
-      description,
-      image,
-      price,
-      title,
-      createdAt,
-      createdBy,
+      ...doc.data(),
     };
   });
   return transformedService;
 };
+
+export const getService = (ref) => {
+  const getCurrentService = ref.get().then(snapShot => {
+    return {
+      id: snapShot.id,
+      ...snapShot.data()
+    }
+  })
+  return getCurrentService
+}
+
 
 export const auth = firebase.auth();
 export const authSession = firebase

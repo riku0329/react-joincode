@@ -2,31 +2,32 @@ import React from "react";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 
-import { CardContainer } from "../common/CardContainer";
 import {
-  selectServices,
   selectIsServicesFetching,
+  selectUserServices,
 } from "../../redux/service/service.selectors";
-import CardItem from "./CardItem";
-import { Spinner } from "../common";
 
-const ServiceCard = ({ services, isFetching }) => {
+import { Spinner } from "../common";
+import { CardContainer } from "../common/CardContainer";
+import UserServiceCard from "./UserCardItem";
+
+const UserService = ({ userService, isFetching }) => {
   return (
     <CardContainer>
-      {!isFetching ? (
-        services.map(({ id, ...otherServiceProps }) => (
-          <CardItem key={id} id={id} {...otherServiceProps} />
-        ))
-      ) : (
+      {isFetching ? (
         <Spinner />
+      ) : (
+        userService.map(({ id, ...otherProps }) => (
+          <UserServiceCard key={id} {...otherProps} />
+        ))
       )}
     </CardContainer>
   );
 };
 
 const mapStateToProps = createStructuredSelector({
-  services: selectServices,
+  userService: selectUserServices,
   isFetching: selectIsServicesFetching,
 });
 
-export default connect(mapStateToProps, null)(ServiceCard);
+export default connect(mapStateToProps, null)(UserService);

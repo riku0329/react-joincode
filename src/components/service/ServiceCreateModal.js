@@ -8,6 +8,7 @@ import { Textarea } from "../common/Textarea";
 import { Button } from "../common/Button";
 import { createServiceStart } from "../../redux/service/service.actions";
 import { connect } from "react-redux";
+import { LIGHT_ASH } from "../../utils/constans";
 
 const customStyles = {
   content: {
@@ -62,21 +63,30 @@ const ServiceForm = styled.form`
 `;
 
 const ServiceInput = styled(Input)`
+  color: ${LIGHT_ASH};
   width: 50%;
+  background: #232631;
   @media (max-width: 768px) {
     width: 100%;
   }
 `;
 
+const ServiceInputStyled = styled(Input)`
+  color: ${LIGHT_ASH};
+  background: #232631;
+`
+
 const ServiceSelect = styled(Select)`
-  width: 30%;
+  color: ${LIGHT_ASH};
+  width: 25%;
+  background: #232631;
   @media (max-width: 768px) {
-    width: 40%;
+    width: 50%;
   }
 `;
 
 const Label = styled.label`
-  color: #fff;
+  color: ${LIGHT_ASH};
 `;
 
 const ServiceButton = styled.div`
@@ -146,12 +156,12 @@ function ServiceCreateModal({ createServiceStart }) {
         <ServiceForm>
           <Label>Category</Label>
           <ServiceSelect onChange={handleChange} name="category">
-            <option value="react">react</option>
-            <option value="python">python</option>
-            <option value="php">php</option>
-            <option value="aws">aws</option>
-            <option value="firebase">firebase</option>
-            <option value="photoshop">photoshop</option>
+            <option value="プログラミング">プログラミング</option>
+            <option value="ビジネススキル">ビジネススキル</option>
+            <option value="写真">写真</option>
+            <option value="デザイン">デザイン</option>
+            <option value="音楽">音楽</option>
+            <option value="言語">言語</option>
           </ServiceSelect>
           <Label>Title</Label>
           <ServiceInput
@@ -170,14 +180,14 @@ function ServiceCreateModal({ createServiceStart }) {
             autoComplete="off"
           />
           <Label>Image URL</Label>
-          <Input
+          <ServiceInputStyled
             onChange={handleChange}
             name="image"
             type="text"
-            placeholder="Text Input"
+            placeholder="Text area"
           />
           <Label>Price per Hour</Label>
-          <Input
+          <ServiceInputStyled
             onChange={handleChange}
             name="price"
             type="number"

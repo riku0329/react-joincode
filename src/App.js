@@ -4,11 +4,10 @@ import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 
-
 import { checkUserSession } from "./redux/user/user.actions";
 import {
   selectCurrentUser,
-  selectIsUserLoding
+  selectIsUserLoding,
 } from "./redux/user/user.selectors";
 
 import Login from "./pages/Login";
@@ -22,15 +21,16 @@ import DarkTheme from "./components/themes/dark";
 import { Spinner } from "./components/common";
 import Service from "./pages/Service";
 import UserServices from "./pages/UserServices";
+import ServiceDetails from "./pages/ServiceDetails";
 
 const GlobalStyle = createGlobalStyle`
   body{
-    background: ${p => p.theme.BASE1};
+    background: ${(p) => p.theme.BASE1};
     box-sizing: border-box;
     min-height: 100vh;
     margin: 0;
     padding: 0;
-    color: ${p => p.theme.PRIMARY_TEXT};
+    color: ${(p) => p.theme.PRIMARY_TEXT};
     font-family: 'Kaushan Script'
   }
 `;
@@ -47,8 +47,8 @@ function App({ checkUserSession, isLoading, currentUser }) {
       theme={{
         ...theme,
         setTheme: () => {
-          setTheme(theme => (theme.id === "light" ? DarkTheme : LightTheme));
-        }
+          setTheme((theme) => (theme.id === "light" ? DarkTheme : LightTheme));
+        },
       }}
     >
       <GlobalStyle />
@@ -73,12 +73,13 @@ function App({ checkUserSession, isLoading, currentUser }) {
                 }
               />
               {currentUser ? (
-                <Route path="/user" component={User} />
+                <Route exact path="/user" component={User} />
               ) : (
                 <Redirect to="/login" />
-                  )}
-                <Route path="/service/me" component={UserServices} />
-                <Route path="/service" component={Service} />
+              )}
+              <Route path="/user/me" component={UserServices} />
+                <Route exact path="/service" component={Service} />
+                <Route path="/service/:serviceId" component={ServiceDetails} />
             </>
           )}
         </Switch>
@@ -89,11 +90,11 @@ function App({ checkUserSession, isLoading, currentUser }) {
 
 const mapStateToProps = createStructuredSelector({
   isLoading: selectIsUserLoding,
-  currentUser: selectCurrentUser
+  currentUser: selectCurrentUser,
 });
 
-const mapDispatchToProps = dispatch => ({
-  checkUserSession: () => dispatch(checkUserSession())
+const mapDispatchToProps = (dispatch) => ({
+  checkUserSession: () => dispatch(checkUserSession()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

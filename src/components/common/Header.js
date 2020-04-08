@@ -14,20 +14,20 @@ const HeaderWrapper = styled.header`
   display: flex;
   position: fixed;
   top: 0;
-  background: ${p => p.theme.BASE2};
-  border-bottom: 3px solid ${p => p.theme.BASE2};
+  background: ${(p) => p.theme.BASE2};
+  border-bottom: 3px solid ${(p) => p.theme.BASE2};
 `;
 
 const Menu = styled.nav`
-  display: ${p => (p.open ? "block" : "none")};
+  display: ${(p) => (p.open ? "block" : "none")};
   position: absolute;
   width: 100%;
   top: 60px;
   left: 0;
   padding: 0;
   font-family: "Open Sans";
-  border-bottom: 3px solid ${p => p.theme.BASE2};
-  background: ${p => p.theme.BASE2};
+  border-bottom: 3px solid ${(p) => p.theme.BASE2};
+  background: ${(p) => p.theme.BASE2};
 
   @media (min-width: 768px) {
     padding: 0;
@@ -52,8 +52,8 @@ const StyledLink = styled(Link)`
   text-align: center;
   box-sizing: border-box;
   margin: auto 0;
-  font-weight: ${p => (p.isActive ? "bold" : "normal")};
-  color: ${p => p.theme.SECONDARY_TEXT};
+  font-weight: ${(p) => (p.isActive ? "bold" : "normal")};
+  color: ${(p) => p.theme.SECONDARY_TEXT};
 `;
 
 const MobileMenuIcon = styled.div`
@@ -63,7 +63,7 @@ const MobileMenuIcon = styled.div`
   padding: 5px;
   > div {
     height: 3px;
-    background: ${p => p.theme.SECONDARY_TEXT};
+    background: ${(p) => p.theme.SECONDARY_TEXT};
     margin: 5px 0;
     width: 100%;
   }
@@ -81,7 +81,7 @@ const TitleNav = styled.div`
 
 const TopLink = styled(Link)`
   text-decoration: none;
-  color: ${p => p.theme.SECONDARY_TEXT};
+  color: ${(p) => p.theme.SECONDARY_TEXT};
 `;
 
 const Header = ({ currentUser, signOutStart }) => {
@@ -96,7 +96,7 @@ const Header = ({ currentUser, signOutStart }) => {
           <TopLink to="/top">Join Code</TopLink>
         </h1>
       </TitleNav>
-      <MobileMenuIcon onClick={() => setMenuOpen(s => !s)}>
+      <MobileMenuIcon onClick={() => setMenuOpen((s) => !s)}>
         <div />
         <div />
         <div />
@@ -104,23 +104,21 @@ const Header = ({ currentUser, signOutStart }) => {
       <Menu open={menuOpen}>
         {currentUser ? (
           <>
-          <StyledLink to="/" isActive={pathname === "/"}>
-            Home
-          </StyledLink>
-            <StyledLink to="/service" isActive={pathname === "/service"} >
+            <StyledLink to="/" isActive={pathname === "/"}>
+              Home
+            </StyledLink>
+            <StyledLink to="/service" isActive={pathname === "/service"}>
               Service
             </StyledLink>
-          <StyledLink to="/user" isActive={pathname === "/user"}>
-            My page
-          </StyledLink>
-            </>
+            <StyledLink to="/user" isActive={pathname === "/user"}>
+              My page
+            </StyledLink>
+          </>
         ) : (
           <StyledLink to="/login" isActive={pathname === "/login"}>
             Login
           </StyledLink>
-
         )}
-
 
         <ToggleTheme isActive={id === "dark"} onToggle={setTheme} />
       </Menu>
@@ -128,11 +126,11 @@ const Header = ({ currentUser, signOutStart }) => {
   );
 };
 const mapStateToProps = createStructuredSelector({
-  currentUser: selectCurrentUser
+  currentUser: selectCurrentUser,
 });
 
-const mapDispatchToProps = dispatch => ({
-  signOutStart: () => dispatch(signOutStart())
+const mapDispatchToProps = (dispatch) => ({
+  signOutStart: () => dispatch(signOutStart()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header);

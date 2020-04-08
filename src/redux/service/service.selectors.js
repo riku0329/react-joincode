@@ -11,3 +11,14 @@ export const selectIsServicesFetching = createSelector(
   [selectService],
   (service) => service.isFetching
 );
+
+
+export const selectUserServices = createSelector(
+  [selectService],
+  (service) => service.userServices
+)
+
+export const SelectService = createSelector(
+  [selectService],
+  (service) => service.currentService
+)

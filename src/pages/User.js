@@ -45,7 +45,7 @@ const User = ({ currentUser, signOutStart }) => {
           <UserName>{displayName}</UserName>
           <p>{email}</p>
           <Button>
-            <Link to="/service/me">My Service</Link>
+            <Link to="/user/me">My Service</Link>
           </Button>
           <Button onClick={signOutStart}>サインアウト</Button>
         </UserProfile>
