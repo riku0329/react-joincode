@@ -28,10 +28,11 @@ export function* createService({ payload: newService }) {
   const currentUser = yield select(selectCurrentUser);
   if (currentUser) {
     try {
+      const userId = yield currentUser.id;
       yield put(
         createServiceSuccess({
           newService,
-          currentUser,
+          userId,
         })
       );
     } catch (error) {
@@ -41,9 +42,9 @@ export function* createService({ payload: newService }) {
 }
 
 export function* createServiceInFirebase({ payload: date }) {
-  const { newService, currentUser } = date;
+  const { newService, userId } = date;
   try {
-    yield createServiceDocument(newService, currentUser);
+    yield createServiceDocument(newService, userId);
   } catch (error) {
     console.log("error", error.message);
   }
@@ -60,7 +61,7 @@ export function* onCreateServiceStart() {
   yield takeLatest(ServiceActionTypes.CREATE_SERVICE_START, createService);
 }
 
-// fetch service ---------
+// fetch all services ---------
 
 export function* fetchServicesAsync() {
   try {
@@ -99,12 +100,18 @@ export function* fetchUserServicesStart() {
   );
 }
 
-// fetch service ---------
+// fetch current service ---------
 
 function* fetchServiceAsync({ payload: id }) {
   try {
     const serviceRef = firestore.collection("services").doc(id);
     const currentService = yield call(getService, serviceRef);
+    const user = yield currentService.user.get();
+    yield (currentService.user = {
+      ...user.data(),
+      id: user.id,
+    });
+    yield console.log(currentService.user.displayName)
     yield put(fetchServiceSucess(currentService));
   } catch (error) {
     yield put(fetchServiceFailure(error));

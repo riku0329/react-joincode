@@ -18,7 +18,7 @@ export const selectUserServices = createSelector(
   (service) => service.userServices
 )
 
-export const SelectService = createSelector(
+export const SelectCurrentService = createSelector(
   [selectService],
-  (service) => service.currentService
+  (service) => service ? service.currentService : null
 )

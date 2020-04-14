@@ -3,6 +3,7 @@ import { PageLayouts } from "../components/common";
 import styled from "styled-components";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
+import moment from "moment";
 
 import { selectCurrentUser } from "../redux/user/user.selectors";
 
@@ -36,7 +37,8 @@ const UserImage = styled.img`
 const UserName = styled.h1``;
 
 const User = ({ currentUser, signOutStart }) => {
-  const { photoURL, email, displayName } = currentUser;
+  const { photoURL, email, displayName, createdAt } = currentUser;
+  const timestamp = moment(createdAt.seconds * 1000).format("YYYY/MM/DD");
   return (
     <PageLayouts>
       <UserStyled>
@@ -44,6 +46,8 @@ const User = ({ currentUser, signOutStart }) => {
           <UserImage src={photoURL} />
           <UserName>{displayName}</UserName>
           <p>{email}</p>
+          <p>アカウント作成日</p>
+          <p>{ timestamp }</p>
           <Button>
             <Link to="/user/me">My Service</Link>
           </Button>

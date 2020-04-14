@@ -25,8 +25,12 @@ const TitleStyled = styled.div`
   height: 20rem;
   text-align: center;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+  .text {
+    margin: 0;
+  }
 `;
 
 const Service = ({ fetchServicesStart }) => {
@@ -38,7 +42,8 @@ const Service = ({ fetchServicesStart }) => {
       <ServiceStyled>
         <ServiceCreateModal />
         <TitleStyled>
-          <h1>新しいことを学ぶ</h1>
+          <h1 className="text">新しいことを学ぶ</h1>
+          <p>講師から直接学ぶことができます</p>
         </TitleStyled>
         <ServiceCard />
       </ServiceStyled>

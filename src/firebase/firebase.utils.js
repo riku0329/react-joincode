@@ -19,7 +19,6 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
   if (!userAuth) return;
 
   const userRef = firestore.doc(`users/${userAuth.uid}`);
-
   const snapShot = await userRef.get();
 
   if (!snapShot.exists) {
@@ -41,6 +40,14 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
   return userRef;
 };
 
+export const getUserProfile = (userId) => {
+  firestore
+    .collection("users")
+    .doc(userId)
+    .get()
+    .then((snapShot) => ({ userId, ...snapShot.data() }));
+};
+
 export const getCurrentUser = () => {
   return new Promise((resolve, reject) => {
     const unsubscribe = auth.onAuthStateChanged((userAuth) => {
@@ -50,11 +57,12 @@ export const getCurrentUser = () => {
   });
 };
 
-export const createServiceDocument = async (newService, user) => {
+
+export const createServiceDocument = async (newService, userId) => {
+  const userRef = firestore.doc("users/" + userId);
   const serviceRef = firestore.collection("services").doc();
   const createdAt = new Date();
   const { category, description, image, price, title } = newService;
-  const { id, displayName } = user;
   try {
     await serviceRef.set({
       category,
@@ -63,8 +71,7 @@ export const createServiceDocument = async (newService, user) => {
       price,
       title,
       createdAt,
-      userId: id,
-      displayName,
+      user: userRef,
     });
   } catch (error) {
     console.log("error creating service", error.message);
@@ -73,7 +80,13 @@ export const createServiceDocument = async (newService, user) => {
 };
 
 export const servicesSnapshotToMap = (services) => {
-  const transformedService = services.docs.map((doc) => {
+  const  transformedService = services.docs.map((doc) => {
+    const userData = doc
+      .data()
+      .user.get()
+      .then((data) => {
+        return data.data().email;
+      });
     return {
       id: doc.id,
       ...doc.data(),
@@ -82,16 +95,18 @@ export const servicesSnapshotToMap = (services) => {
   return transformedService;
 };
 
-export const getService = (ref) => {
-  const getCurrentService = ref.get().then(snapShot => {
+export const getService = async (ref) => {
+  const getCurrentService = await ref.get().then((snapShot) => {
     return {
       id: snapShot.id,
-      ...snapShot.data()
-    }
-  })
-  return getCurrentService
-}
+      ...snapShot.data(),
+    };
+  });
+  return await getCurrentService;
+};
 
+export const createRef = (collection, docId) =>
+  firestore.doc(`${collection}/` + docId);
 
 export const auth = firebase.auth();
 export const authSession = firebase

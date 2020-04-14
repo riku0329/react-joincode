@@ -2,13 +2,11 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import Modal from "react-modal";
 
-import { Input } from "../common/Input";
-import { Select } from "../common/Select";
-import { Textarea } from "../common/Textarea";
-import { Button } from "../common/Button";
+import { Input, Select, Textarea, Button } from "../common";
 import { createServiceStart } from "../../redux/service/service.actions";
 import { connect } from "react-redux";
 import { LIGHT_ASH } from "../../utils/constans";
+import "./create-modal-styles.css"
 
 const customStyles = {
   content: {
@@ -122,7 +120,7 @@ function ServiceCreateModal({ createServiceStart }) {
 
   function afterOpenModal() {
     // references are now sync'd and can be accessed.
-    subtitle.style.color = "#e65661";
+    subtitle.style.color = `${LIGHT_ASH}`;
   }
 
   function closeModal() {
@@ -150,11 +148,12 @@ function ServiceCreateModal({ createServiceStart }) {
         onAfterOpen={afterOpenModal}
         onRequestClose={closeModal}
         style={customStyles}
+        overlayClassName="Overlay"
         contentLabel="Example Modal"
       >
         <h2 ref={(_subtitle) => (subtitle = _subtitle)}>サービスを作成する</h2>
         <ServiceForm>
-          <Label>Category</Label>
+          <Label>カテゴリー</Label>
           <ServiceSelect onChange={handleChange} name="category">
             <option value="プログラミング">プログラミング</option>
             <option value="ビジネススキル">ビジネススキル</option>
@@ -163,7 +162,7 @@ function ServiceCreateModal({ createServiceStart }) {
             <option value="音楽">音楽</option>
             <option value="言語">言語</option>
           </ServiceSelect>
-          <Label>Title</Label>
+          <Label>タイトル</Label>
           <ServiceInput
             onChange={handleChange}
             name="title"
@@ -171,7 +170,7 @@ function ServiceCreateModal({ createServiceStart }) {
             placeholder="タイトル"
             autoComplete="off"
           />
-          <Label>description</Label>
+          <Label>内容</Label>
           <Textarea
             onChange={handleChange}
             name="description"
@@ -179,14 +178,15 @@ function ServiceCreateModal({ createServiceStart }) {
             placeholder="テキストエリア"
             autoComplete="off"
           />
-          <Label>Image URL</Label>
+          <Label>写真</Label>
           <ServiceInputStyled
             onChange={handleChange}
             name="image"
             type="text"
             placeholder="Text area"
+            autoComplete="off"
           />
-          <Label>Price per Hour</Label>
+          <Label>一時間当たりの金額</Label>
           <ServiceInputStyled
             onChange={handleChange}
             name="price"
@@ -198,7 +198,7 @@ function ServiceCreateModal({ createServiceStart }) {
             <ButtonStyled type="button" onClick={handleSubmit}>
               作成
             </ButtonStyled>
-            <ButtonStyled disabled isClose onClick={closeModal}>
+            <ButtonStyled disabled onClick={closeModal}>
               キャンセル
             </ButtonStyled>
           </ServiceButton>

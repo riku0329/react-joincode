@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import {  useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
+import moment from "moment";
 
 import { CardItemStyled } from "../common/CardItemStyled";
 
@@ -31,8 +32,16 @@ export const CardUser = styled.p`
   font-size: 14px;
 `;
 
-const CardItem = ({ id, title, image, price, displayName }) => {
+const CardItem = ({ id, title, image, price, createdAt, user }) => {
   const history = useHistory();
+  const timestamp = moment(createdAt.seconds * 1000).format("YYYY/MM/DD");
+  const userData = user.get().then(async (data) => {
+    return await {
+      ...data.data(),
+      id: data.id,
+    };
+  });
+  console.log(userData);
   return (
     <CardItemStyled onClick={() => history.push(`/service/${id}`)}>
       <ImageStyled>
@@ -40,7 +49,7 @@ const CardItem = ({ id, title, image, price, displayName }) => {
       </ImageStyled>
       <CardStyled>
         <CardTitle>{title}</CardTitle>
-        <CardUser>{displayName}</CardUser>
+        <CardUser>作成日{timestamp}</CardUser>
         <p>￥{price}</p>
       </CardStyled>
     </CardItemStyled>
