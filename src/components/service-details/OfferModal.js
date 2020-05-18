@@ -8,6 +8,9 @@ import "./modal-styles.css";
 import { Button, Input } from "../common";
 import { SelectCurrentService } from "../../redux/service/service.selectors";
 import { LIGHT_ASH } from "../../utils/constans";
+import { selectCurrentUser } from "../../redux/user/user.selectors";
+import { createOfferStart } from "../../redux/offer/offer.acions";
+import { createRef } from "../../firebase/firebase.utils";
 
 const DetailsButton = styled(Button)`
   width: 50%;
@@ -33,9 +36,9 @@ const ModalTitle = styled.h2`
 `;
 
 const ButtonStyles = styled.div`
-  display:  flex;
+  display: flex;
   flex-direction: row;
-`
+`;
 
 const ModalButton = styled(Button)`
   width: 20%;
@@ -46,10 +49,17 @@ const ModalButton = styled(Button)`
   }
 `;
 
+const CloseButton = styled.div`
+  padding: 4px;
+  background: #aaa;
+  border-radius: 8px;
+  cursor: pointer;
+`
+
 // Make sure to bind modal to your appElement (http://reactcommunity.org/react-modal/accessibility/)
 Modal.setAppElement("#root");
 
-function OfferModal({ currentService }) {
+function OfferModal({ currentService, currentUser, createOfferStart }) {
   const [offer, setOffer] = useState({
     fromUser: "",
     toUser: "",
@@ -68,11 +78,23 @@ function OfferModal({ currentService }) {
     return setOffer({ ...offer, [name]: value });
   };
 
-  const handleSubmit = () => {
-    alert(JSON.stringify(offer));
-  };
+  const handleSubmit = (event) => {
+    if (offer.time === 0) {
+      return
+    }
+    event.preventDefault();
+    const offerCopy = { ...offer };
 
-  const [modalIsOpen, setIsOpen] = React.useState(false);
+    offerCopy.fromUser = createRef("users", currentUser.id);
+    offerCopy.toUser = createRef("services", currentService.user.id);
+    offerCopy.service = createRef("services", currentService.id);
+    offerCopy.time = parseInt(offer.time, 10)
+    createOfferStart(offerCopy);
+    closeModal();
+  };
+  const closeButton = () => closeModal();
+
+  const [modalIsOpen, setIsOpen] = useState(false);
   function openModal() {
     setIsOpen(true);
   }
@@ -125,7 +147,9 @@ function OfferModal({ currentService }) {
           <ModalButton type="button" onClick={handleSubmit}>
             送信
           </ModalButton>
-          <ModalButton type="button" disabled onClick={closeModal}>閉じる</ModalButton>
+          <CloseButton onClick={closeButton}>
+            閉じる
+          </CloseButton>
         </ButtonStyles>
       </Modal>
     </div>
@@ -134,6 +158,11 @@ function OfferModal({ currentService }) {
 
 const mapStateToProps = createStructuredSelector({
   currentService: SelectCurrentService,
+  currentUser: selectCurrentUser,
 });
 
-export default connect(mapStateToProps, null)(OfferModal);
+const mapDispatchToProps = (dispatch) => ({
+  createOfferStart: (offer) => dispatch(createOfferStart(offer)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(OfferModal);

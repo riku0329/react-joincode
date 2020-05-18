@@ -3,6 +3,8 @@ import styled, { css } from "styled-components";
 const Button = styled.button`
   color: ${(p) => p.theme.PRIMARY_TEXT};
   margin-bottom: 8px;
+  outline: none;
+  cursor: pointer;
   ${(p) =>
     p.secondary
       ? css`

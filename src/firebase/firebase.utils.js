@@ -57,7 +57,6 @@ export const getCurrentUser = () => {
   });
 };
 
-
 export const createServiceDocument = async (newService, userId) => {
   const userRef = firestore.doc("users/" + userId);
   const serviceRef = firestore.collection("services").doc();
@@ -80,13 +79,7 @@ export const createServiceDocument = async (newService, userId) => {
 };
 
 export const servicesSnapshotToMap = (services) => {
-  const  transformedService = services.docs.map((doc) => {
-    const userData = doc
-      .data()
-      .user.get()
-      .then((data) => {
-        return data.data().email;
-      });
+  const transformedService = services.docs.map((doc) => {
     return {
       id: doc.id,
       ...doc.data(),
@@ -96,17 +89,55 @@ export const servicesSnapshotToMap = (services) => {
 };
 
 export const getService = async (ref) => {
-  const getCurrentService = await ref.get().then((snapShot) => {
-    return {
-      id: snapShot.id,
-      ...snapShot.data(),
-    };
-  });
-  return await getCurrentService;
+  const getCurrentService = await ref.get();
+  const currentService = await getCurrentService.data();
+  currentService.id = getCurrentService.id;
+  const user = await currentService.user.get();
+  currentService.user = user.data();
+  currentService.user.id = user.id;
+  return currentService;
 };
 
 export const createRef = (collection, docId) =>
   firestore.doc(`${collection}/` + docId);
+
+export const createOfferDocument = async (offer) => {
+  const offerRef = firestore.collection("offers").doc();
+  try {
+    await offerRef.set({ ...offer });
+  } catch (error) {
+    console.log("error creating service", error.message);
+  }
+  return offerRef;
+};
+
+export const fetchSendOffers = (userId) => {
+  const userRef = createRef("users", userId);
+  return firestore
+    .collection("offers")
+    .where("fromUser", "==", userRef)
+    .get()
+    .then((snapShot) =>
+      snapShot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }))
+    );
+};
+
+export const fetchReceivedOffers = (userId) => {
+  const userRef = createRef("users", userId);
+  return firestore
+    .collection("offers")
+    .where("toUser", "==", userRef)
+    .get()
+    .then((snapShot) =>
+      snapShot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }))
+    );
+};
 
 export const auth = firebase.auth();
 export const authSession = firebase

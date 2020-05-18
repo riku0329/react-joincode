@@ -63,7 +63,7 @@ export function* onCreateServiceStart() {
 
 // fetch all services ---------
 
-export function* fetchServicesAsync() {
+function* fetchServicesAsync() {
   try {
     const serviceRef = firestore.collection("services");
     const snapShot = yield serviceRef.orderBy("createdAt", "asc").get();
@@ -106,12 +106,6 @@ function* fetchServiceAsync({ payload: id }) {
   try {
     const serviceRef = firestore.collection("services").doc(id);
     const currentService = yield call(getService, serviceRef);
-    const user = yield currentService.user.get();
-    yield (currentService.user = {
-      ...user.data(),
-      id: user.id,
-    });
-    yield console.log(currentService.user.displayName)
     yield put(fetchServiceSucess(currentService));
   } catch (error) {
     yield put(fetchServiceFailure(error));

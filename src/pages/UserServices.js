@@ -1,10 +1,10 @@
-import React, { useEffect } from "react";
-import styled from "styled-components";
+import React, { useEffect } from 'react';
+import styled from 'styled-components';
 
-import { PageLayouts } from "../components/common";
-import UserService from "../components/user-service/UserServiceCard";
-import { connect } from "react-redux";
-import { fetchUserServicesStart } from "../redux/service/service.actions";
+import { PageLayouts } from '../components/common';
+import UserService from '../components/user-service/UserServiceCard';
+import { connect } from 'react-redux';
+import { fetchUserServicesStart } from '../redux/service/service.actions';
 
 const UserServiceeStyled = styled.div`
   width: 80%;

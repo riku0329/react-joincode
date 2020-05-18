@@ -1,31 +1,30 @@
-import React, { useState, useContext } from "react";
-import styled, { ThemeContext } from "styled-components";
-import { createStructuredSelector } from "reselect";
-import { Link as ReactRouterDomLink, useLocation } from "react-router-dom";
-import { ToggleTheme } from "./ToggleTheme";
-import { connect } from "react-redux";
-import { signOutStart } from "../../redux/user/user.actions";
-import { selectCurrentUser } from "../../redux/user/user.selectors";
+import React, { useState, useContext } from 'react';
+import styled, { ThemeContext } from 'styled-components';
+import { createStructuredSelector } from 'reselect';
+import { Link as ReactRouterDomLink, useLocation } from 'react-router-dom';
+import { ToggleTheme } from './ToggleTheme';
+import { connect } from 'react-redux';
+import { signOutStart } from '../../redux/user/user.actions';
+import { selectCurrentUser } from '../../redux/user/user.selectors';
 
 const HeaderWrapper = styled.header`
   height: 60px;
   width: 100%;
-  box-sizing: border-box;
   display: flex;
-  position: fixed;
+  position: relative;
   top: 0;
   background: ${(p) => p.theme.BASE2};
-  border-bottom: 3px solid ${(p) => p.theme.BASE2};
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 `;
 
 const Menu = styled.nav`
-  display: ${(p) => (p.open ? "block" : "none")};
+  display: ${(p) => (p.open ? 'block' : 'none')};
   position: absolute;
   width: 100%;
   top: 60px;
-  left: 0;
+  left: 20;
   padding: 0;
-  font-family: "Open Sans";
+  font-family: 'Open Sans';
   border-bottom: 3px solid ${(p) => p.theme.BASE2};
   background: ${(p) => p.theme.BASE2};
 
@@ -52,13 +51,13 @@ const StyledLink = styled(Link)`
   text-align: center;
   box-sizing: border-box;
   margin: auto 0;
-  font-weight: ${(p) => (p.isActive ? "bold" : "normal")};
+  font-weight: ${(p) => (p.isActive ? 'bold' : 'normal')};
   color: ${(p) => p.theme.SECONDARY_TEXT};
 `;
 
 const MobileMenuIcon = styled.div`
-  margin: auto 0 auto auto;
-  width: 25px;
+  margin: auto 10px auto auto;
+  width: 40px;
   min-width: 25px;
   padding: 5px;
   > div {
@@ -72,16 +71,15 @@ const MobileMenuIcon = styled.div`
   }
 `;
 
-const TitleNav = styled.div`
-  padding: 0;
-  .top {
-    margin: 0;
+const HeaderTitle = styled.h1`
+  text-align: center;
+  margin: auto auto auto 10px;
+  a {
+    text-decoration: none;
+    font-size: 3.4rem;
+    font-family: 'Kaushan Script';
+    color: ${(p) => p.theme.SECONDARY_TEXT};
   }
-`;
-
-const TopLink = styled(Link)`
-  text-decoration: none;
-  color: ${(p) => p.theme.SECONDARY_TEXT};
 `;
 
 const Header = ({ currentUser, signOutStart }) => {
@@ -91,11 +89,9 @@ const Header = ({ currentUser, signOutStart }) => {
 
   return (
     <HeaderWrapper>
-      <TitleNav>
-        <h1 className="top">
-          <TopLink to="/top">Join Code</TopLink>
-        </h1>
-      </TitleNav>
+      <HeaderTitle>
+        <Link to='/top'>Join Code</Link>
+      </HeaderTitle>
       <MobileMenuIcon onClick={() => setMenuOpen((s) => !s)}>
         <div />
         <div />
@@ -104,23 +100,32 @@ const Header = ({ currentUser, signOutStart }) => {
       <Menu open={menuOpen}>
         {currentUser ? (
           <>
-            <StyledLink to="/" isActive={pathname === "/"}>
-              Home
+            <StyledLink to='/' isActive={pathname === '/'}>
+              ホーム
             </StyledLink>
-            <StyledLink to="/service" isActive={pathname === "/service"}>
-              Service
+            <StyledLink to='/service' isActive={pathname === '/service'}>
+              サービス
             </StyledLink>
-            <StyledLink to="/user" isActive={pathname === "/user"}>
-              My page
+            <StyledLink to='/user' isActive={pathname === '/user'}>
+              アカウント
+            </StyledLink>
+            <StyledLink to='/offer/send' isActive={pathname === '/offer/send'}>
+              送信Box
+            </StyledLink>
+            <StyledLink
+              to='/offer/received'
+              isActive={pathname === '/offer/received'}
+            >
+              受信Box
             </StyledLink>
           </>
         ) : (
-          <StyledLink to="/login" isActive={pathname === "/login"}>
+          <StyledLink to='/login' isActive={pathname === '/login'}>
             Login
           </StyledLink>
         )}
 
-        <ToggleTheme isActive={id === "dark"} onToggle={setTheme} />
+        <ToggleTheme isActive={id === 'dark'} onToggle={setTheme} />
       </Menu>
     </HeaderWrapper>
   );

@@ -22,16 +22,40 @@ import { Spinner } from "./components/common";
 import Service from "./pages/Service";
 import UserServices from "./pages/UserServices";
 import ServiceDetails from "./pages/ServiceDetails";
+import SendOffer from "./pages/SentOffers";
+import ReceivedOffer from "./pages/ReceivedOffers";
 
 const GlobalStyle = createGlobalStyle`
-  body{
-    background: ${(p) => p.theme.BASE1};
+  *,
+  *::before,
+  *::after {
     box-sizing: border-box;
+  }
+
+  html {
+    font-size: 62.5%;
+    @media (max-width: 768px){
+      font-size: 50%;
+    }
+  }
+
+  body{
+    background: ${(p) => p.theme.BASE2};
     min-height: 100vh;
     margin: 0;
     padding: 0;
     color: ${(p) => p.theme.PRIMARY_TEXT};
-    font-family: 'Kaushan Script'
+    font-family: 'Hiragino Kaku Gothic Pro', 'ヒラギノ角ゴ Pro W3', メイリオ,
+    Meiryo, 'ＭＳ Ｐゴシック', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 400;
+    line-height: 1.8;
+    text-size-adjust: 100%;
+    }
+    img {
+    max-width: 100%;
+    height: auto;
+    vertical-align: middle;
   }
 `;
 
@@ -78,8 +102,10 @@ function App({ checkUserSession, isLoading, currentUser }) {
                 <Redirect to="/login" />
               )}
               <Route path="/user/me" component={UserServices} />
-                <Route exact path="/service" component={Service} />
-                <Route path="/service/:serviceId" component={ServiceDetails} />
+              <Route exact path="/service" component={Service} />
+              <Route path="/service/:serviceId" component={ServiceDetails} />
+              <Route path="/offer/send" component={SendOffer} />
+              <Route path="/offer/received" component={ReceivedOffer} />
             </>
           )}
         </Switch>

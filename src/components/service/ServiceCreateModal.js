@@ -100,6 +100,18 @@ const ButtonStyled = styled(Button)`
   }
 `;
 
+const Close = styled.div`
+  background: #aaa;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  p{
+    display: block;
+  }
+`
+
 // Make sure to bind modal to your appElement (http://reactcommunity.org/react-modal/accessibility/)
 Modal.setAppElement("#root");
 
@@ -198,9 +210,9 @@ function ServiceCreateModal({ createServiceStart }) {
             <ButtonStyled type="button" onClick={handleSubmit}>
               作成
             </ButtonStyled>
-            <ButtonStyled disabled onClick={closeModal}>
-              キャンセル
-            </ButtonStyled>
+            <Close onClick={closeModal}>
+              <p>キャンセル</p>
+            </Close>
           </ServiceButton>
         </ServiceForm>
       </Modal>

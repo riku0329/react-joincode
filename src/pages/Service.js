@@ -11,12 +11,10 @@ import ServiceCard from "../components/service/ServiceCard";
 
 const ServiceStyled = styled.div`
   background: ${(p) => p.theme.BASE2};
-  width: 80%;
-  display: flex;
-  flex-direction: column;
-  overflow-y: scroll;
+  max-width: 960px;
+  margin: 0 auto;
   @media (max-width: 768px) {
-    width: 100%;
+    width: 90%;
   }
 `;
 
@@ -28,9 +26,6 @@ const TitleStyled = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  .text {
-    margin: 0;
-  }
 `;
 
 const Service = ({ fetchServicesStart }) => {
@@ -42,7 +37,7 @@ const Service = ({ fetchServicesStart }) => {
       <ServiceStyled>
         <ServiceCreateModal />
         <TitleStyled>
-          <h1 className="text">新しいことを学ぶ</h1>
+          <h1>新しいことを学ぶ</h1>
           <p>講師から直接学ぶことができます</p>
         </TitleStyled>
         <ServiceCard />

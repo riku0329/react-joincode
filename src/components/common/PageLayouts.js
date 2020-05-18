@@ -3,15 +3,8 @@ import styled from "styled-components";
 import Header from "./Header";
 
 const Content = styled.main`
-  display: flex;
-  justify-content: center;
-  height: 100vh;
   max-width: 100%;
-  padding-top: 70px;
-  box-sizing: border-box;
-  font-family: "Open Sans";
-  background: ${p => p.theme.BASE1};
-
+  margin-top: 30px;
   h1,
   h2,
   h3,
@@ -19,6 +12,7 @@ const Content = styled.main`
   h5,
   h6 {
     font-family: "Kaushan Script";
+    font-size: 2.4rem
   }
 `;
 

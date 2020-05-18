@@ -60,14 +60,8 @@ const DetailsMenu = styled.div`
   }
 `;
 
-const UserMap = ({ name }) => {
-  return <p>{name}</p>
-}
-
-const DetailsContainer = ({ currentService, }) => {
-  const { image, description, title, user, createdAt } = currentService;
-  const timestamp = moment(createdAt * 1000).format("YYYY/MM/DD");
-  console.log(currentService.user);
+const DetailsStyles = ({ currentService }) => {
+  const { image, description, title, user } = currentService;
   return (
     <DetailsStyled>
       <DetailsImage>
@@ -76,9 +70,7 @@ const DetailsContainer = ({ currentService, }) => {
       <DetailsMenu>
         <p className="title">{title}</p>
         <p className="description">{description}</p>
-
-        <p>作成者{}</p>
-        <p>作成日{}</p>
+        {user ? <p>作成者{user.displayName}</p> : <p></p>}
         <OfferModal />
       </DetailsMenu>
     </DetailsStyled>
@@ -90,4 +82,4 @@ const mapStateToProps = createStructuredSelector({
   isFetching: selectIsServicesFetching,
 });
 
-export default connect(mapStateToProps, null)(DetailsContainer);
+export default connect(mapStateToProps, null)(DetailsStyles);

@@ -7,8 +7,8 @@ import { CardItemStyled } from "../common/CardItemStyled";
 
 export const ImageStyled = styled.div`
   width: 100%;
-  height: 50%;
-
+  max-width: 100%;
+  height: 150px;
   :hover img {
     opacity: 0.8;
   }
@@ -16,7 +16,7 @@ export const ImageStyled = styled.div`
 
 export const CardImage = styled.img`
   width: 100%;
-  height: 100%;
+  height: 150px;
 `;
 
 export const CardStyled = styled.div`
@@ -35,13 +35,6 @@ export const CardUser = styled.p`
 const CardItem = ({ id, title, image, price, createdAt, user }) => {
   const history = useHistory();
   const timestamp = moment(createdAt.seconds * 1000).format("YYYY/MM/DD");
-  const userData = user.get().then(async (data) => {
-    return await {
-      ...data.data(),
-      id: data.id,
-    };
-  });
-  console.log(userData);
   return (
     <CardItemStyled onClick={() => history.push(`/service/${id}`)}>
       <ImageStyled>
